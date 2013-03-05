@@ -62,6 +62,13 @@ module.exports = (robot) ->
     hb_status.update_away msg.message.user.name, null
     msg.send msg.message.user.name + " has returned."
 
+  robot.hear /./i, (msg) ->
+     hb_status = new Status robot
+     if  hb_status.aways_[msg.message.user.name] != undefined
+       hb_status.update_away msg.message.user.name, null
+       msg.send msg.message.user.name + " has returned."
+     return
+
   robot.hear /(^\w+\s?\w+\s?\w+):/i, (msg) ->
     hb_status = new Status robot
     mention = msg.match[1]
