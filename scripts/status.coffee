@@ -61,7 +61,7 @@ module.exports = (robot) ->
       "#{user}: #{s}"
     msg.send message.join "\n"
 
-  robot.respond /(return|r$|r ) ?(.*)?/i, (msg) ->
+  robot.respond /(return|r$|r|back ) ?(.*)?/i, (msg) ->
     hb_status = new Status robot
     hb_status.update_away msg.message.user.name, null
     msg.send msg.message.user.name + " has returned."
