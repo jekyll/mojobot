@@ -17,34 +17,36 @@
 
 class History
   constructor: (@robot, @keep) ->
-    @cache = []
+    @cache = {}
     @robot.brain.on 'loaded', =>
       if @robot.brain.data.history
         @robot.logger.info "Loading saved chat history"
         @cache = @robot.brain.data.history
 
-  add: (message) ->
-    @cache.push message
+  add: (room, message) ->
+    @cache[room] ?= []
+    @cache[room].push message
     while @cache.length > @keep
       @cache.shift()
     @robot.brain.data.history = @cache
 
-  show: (lines) ->
-    if (lines > @cache.length)
-      lines = @cache.length
+  show: (room, lines) ->
+    @cache[room] ?= []
+    if (lines > @cache[room].length)
+      lines = @cache[room].length
     reply = 'Showing ' + lines + ' lines of history:\n'
-    reply = reply + @entryToString(message) + '\n' for message in @cache[-lines..]
+    reply = reply + @entryToString(message) + '\n' for message in @cache[room][-lines..]
     return reply
 
   entryToString: (event) ->
     return '[' + event.hours + ':' + event.minutes + '] ' + event.name + ': ' + event.message
 
   clear: ->
-    @cache = []
+    @cache = {}
     @robot.brain.data.history = @cache
 
 class HistoryEntry
-  constructor: (@name, @message) ->
+  constructor: (@room, @name, @message) ->
     @time = new Date()
     @hours = @time.getHours()
     @minutes = @time.getMinutes()
@@ -62,8 +64,8 @@ module.exports = (robot) ->
   history = new History(robot, options.lines_to_keep)
 
   robot.hear /(.*)/i, (msg) ->
-    historyentry = new HistoryEntry(msg.message.user.name, msg.match[1])
-    history.add historyentry
+    historyentry = new HistoryEntry(msg.message.room, msg.message.user.name, msg.match[1])
+    history.add msg.message.room, historyentry
 
   robot.respond /show history\s*(\d+)?/i, (msg) ->
     if msg.match[1]
@@ -73,7 +75,7 @@ module.exports = (robot) ->
     reply_to =  msg.message.user.name
     msg.send "Sending room history to " + reply_to + " via PM"
     console.log "sending a history PM to " + reply_to
-    robot.adapter.reply { user: { reply_to: reply_to, name: reply_to }}, history.show(lines)
+    robot.adapter.reply { user: { reply_to: reply_to, name: reply_to }}, history.show(msg.message.room, lines)
 
   robot.respond /clear history/i, (msg) ->
     msg.send "Ok, I'm clearing the history."

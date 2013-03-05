@@ -23,7 +23,7 @@ module.exports = (robot) ->
        localstorage[msg.match[1]] = tellmessage
      else
        localstorage[msg.match[1]] += tellmessage
-     msg.send "@" + msg.message.user.name + " Sodesu sensei sama!"
+     msg.send "@" + msg.message.user.name + ": Sodesu sensei sama!"
      return
 
    robot.hear /./i, (msg) ->
@@ -33,3 +33,17 @@ module.exports = (robot) ->
        delete localstorage[msg.message.user.name]
        msg.send tellmessage
      return
+
+   ## irc HACK
+   #robot.adapter.on 'join', (channel, who) ->
+      #msg.send who
+
+   #console.log robot.listeners
+     #adapter.bot.addListener 'join', (channel, who) ->
+     #console.log(who + " joined " + channel)
+     #if localstorage[who]?
+       #tellmessage = localstorage[who]
+       #msg.send who + ": notifications pending."
+     #return
+    ## EOH
+
