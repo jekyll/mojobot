@@ -11,7 +11,9 @@ Util = require "util"
 module.exports = (robot) ->
   robot.respond /show storage$/i, (msg) ->
     output = Util.inspect(robot.brain.data, false, 4)
-    msg.send output
+    reply_to =  msg.message.user.name
+    msg.send "sending a memory dump via PM to " + reply_to
+    robot.adapter.reply { user: { reply_to: reply_to, name: reply_to }}, output
 
   robot.respond /show users$/i, (msg) ->
     response = ""

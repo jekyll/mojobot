@@ -12,17 +12,13 @@
 #                        message. While away, anybody who mentions you
 #                        will be shown your away message. Remember AIM?
 #
-#   hubot return - Removes your away flag & away message
+#   hubot back - Removes your away flag & away message
 #
 #   hubot status <status_message> - Sets your status to status_message.
 #
 #   hubot status <username> - Tells you the status of username
 #
-#   Shortcuts Commands:
-#     hubot a <away_message>
-#     hubot r
-#     hubot s <status_message>
-#     hubot s <username>
+
 #
 # Notes:
 #   We opted to used the '/<trigger>' syntax in favor of the 'hubot <trigger>'
@@ -36,7 +32,7 @@ module.exports = (robot) ->
 
   _ = require 'underscore'
 
-  robot.respond /(away|a$|a ) ?(.*)?/i, (msg) ->
+  robot.respond /(away) ?(.*)?/i, (msg) ->
     hb_status = new Status robot
     hb_status.update_away msg.message.user.name, msg.match[2]
     msg.send msg.message.user.name + " is away."
@@ -61,7 +57,7 @@ module.exports = (robot) ->
       "#{user}: #{s}"
     msg.send message.join "\n"
 
-  robot.respond /(return|back|r$|r ) ?(.*)?/i, (msg) ->
+  robot.respond /(return|back) ?(.*)?/i, (msg) ->
     hb_status = new Status robot
     hb_status.update_away msg.message.user.name, null
     msg.send msg.message.user.name + " has returned."
