@@ -23,7 +23,7 @@ module.exports = (robot) ->
        localstorage[msg.match[1]] = tellmessage
      else
        localstorage[msg.match[1]] += tellmessage
-     msg.send "Sodesu sensei sama!"
+     msg.send "@" + msg.message.user.name + " Sodesu sensei sama!"
      return
 
    robot.hear /./i, (msg) ->
