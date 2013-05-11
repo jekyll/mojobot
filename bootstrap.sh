@@ -9,6 +9,7 @@ heroku addons:add redistogo:nano
 heroku config:add HUBOT_HISTORY_LINES=10000
 heroku config:add HUBOT_IRC_SERVER="irc.freenode.net"
 heroku config:add HUBOT_IRC_ROOMS="#jekyll"
-heroku config:add HUBOT_IRC_NICK="mojo"
+heroku config:add HUBOT_IRC_NICK="mojobot"
+heroku config:add HUBOT_IRC_UNFLOOD="false"
 git push heroku master
 heroku ps:scale app=1
