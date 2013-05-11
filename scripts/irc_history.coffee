@@ -78,5 +78,5 @@ module.exports = (robot) ->
     robot.adapter.reply { user: { reply_to: reply_to, name: reply_to }}, history.show(msg.message.room, lines)
 
   robot.respond /clear history/i, (msg) ->
-    msg.send "Ok, I'm clearing the history."
-    history.clear()
+    msg.send "Eh, sorry mate. Can't clear the history."
+    # history.clear()
