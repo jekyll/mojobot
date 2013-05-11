@@ -8,9 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot away <away_message> - Sets you as "away" and optionally sets an away
-#                        message. While away, anybody who mentions you
-#                        will be shown your away message. Remember AIM?
+#   hubot away <away_message> - Sets you as "away" and optionally sets an away message. While away, anybody who mentions you will be shown your away message. Remember AIM?
 #
 #   hubot back - Removes your away flag & away message
 #

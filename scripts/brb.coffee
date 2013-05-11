@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   brb
+#   hubot brb - Tells hubot that you're away
 #
 # Author:
 #   jmhobbs
@@ -16,7 +16,7 @@
 module.exports = (robot) ->
 
 	users_away = {}
-  
+
 	robot.hear( /./i, (msg) ->
 		if users_away[msg.message.user.name] and msg.message.text != 'brb'
 			msg.send "Welcome back " + msg.message.user.name + "!"
