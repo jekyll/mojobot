@@ -56,7 +56,7 @@ class History
       process.nextTick ->
         console.log("SENDING MESSAGE To #{process.env.HUBOT_LOG_SERVER_HOST}...")
         data = querystring.stringify
-          token: process.env.HUBOT_LOG_SERVER_TOKEN,
+          access_token: process.env.HUBOT_LOG_SERVER_TOKEN,
           room:  room,
           text:  event.message,
           author: event.name,
