@@ -7,13 +7,18 @@
 #
 # Configuration:
 #   HUBOT_HISTORY_LINES
+#   HUBOT_LOG_SERVER_HOST
+#   HUBOT_LOG_SERVER_TOKEN
 #
 # Commands:
 #   hubot show history [<lines>] - Shows <lines> of history, otherwise all history
 #   hubot clear history - Clears the history
 #
 # Author:
-#   wubr (modified for IRC by mattetti)
+#   wubr (modified for IRC by mattetti, modified to log to separate server by parkr)
+
+http        = require('http')
+querystring = require('querystring')
 
 class History
   constructor: (@robot, @keep) ->
@@ -26,6 +31,7 @@ class History
   add: (room, message) ->
     @cache[room] ?= []
     @cache[room].push message
+    @logEntryExternally(room, message)
     while @cache.length > @keep
       @cache.shift()
     @robot.brain.data.history = @cache
@@ -45,6 +51,33 @@ class History
     @cache = {}
     @robot.brain.data.history = @cache
 
+  logEntryExternally: (room, event) ->
+    if process.ENV.HUBOT_LOG_SERVER_TOKEN and process.ENV.HUBOT_LOG_SERVER_HOST
+      process.nextTick ->
+        data = querystring.stringify
+          token: process.ENV.HUBOT_LOG_SERVER_TOKEN,
+          room:  room,
+          text:  event.message,
+          author: event.name,
+          time:  event.time.toUTCString()
+
+        opts =
+          host: process.ENV.HUBOT_LOG_SERVER_HOST,
+          port: 80,
+          path: "/api/messages/log",
+          method: 'POST',
+          headers:
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': data.length
+
+        req = http.request opts, (res) ->
+          res.setEncoding('utf8')
+          res.on 'data', (chunk) ->
+            console.log('Response: ' + chunk);
+
+        req.write(data);
+        req.end()
+
 class HistoryEntry
   constructor: (@room, @name, @message) ->
     @time = new Date()
@@ -55,7 +88,7 @@ class HistoryEntry
 
 module.exports = (robot) ->
 
-  options = 
+  options =
     lines_to_keep:  process.env.HUBOT_HISTORY_LINES
 
   unless options.lines_to_keep
