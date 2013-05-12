@@ -52,17 +52,17 @@ class History
     @robot.brain.data.history = @cache
 
   logEntryExternally: (room, event) ->
-    if process.ENV.HUBOT_LOG_SERVER_TOKEN and process.ENV.HUBOT_LOG_SERVER_HOST
+    if process.env.HUBOT_LOG_SERVER_TOKEN and process.env.HUBOT_LOG_SERVER_HOST
       process.nextTick ->
         data = querystring.stringify
-          token: process.ENV.HUBOT_LOG_SERVER_TOKEN,
+          token: process.env.HUBOT_LOG_SERVER_TOKEN,
           room:  room,
           text:  event.message,
           author: event.name,
           time:  event.time.toUTCString()
 
         opts =
-          host: process.ENV.HUBOT_LOG_SERVER_HOST,
+          host: process.env.HUBOT_LOG_SERVER_HOST,
           port: 80,
           path: "/api/messages/log",
           method: 'POST',
