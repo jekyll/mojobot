@@ -74,7 +74,7 @@ class History
           req = http.request opts, (res) ->
             res.setEncoding('utf8')
             res.on 'data', (chunk) ->
-              console.log('Response: ' + chunk)
+              console.log("Response: #{chunk}")
 
           req.on 'error', (e) ->
             console.error(e)
