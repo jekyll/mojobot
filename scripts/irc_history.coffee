@@ -70,13 +70,16 @@ class History
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': data.length
 
-        req = http.request opts, (res) ->
-          res.setEncoding('utf8')
-          res.on 'data', (chunk) ->
-            console.log('Response: ' + chunk);
+        try
+          req = http.request opts, (res) ->
+            res.setEncoding('utf8')
+            res.on 'data', (chunk) ->
+              console.log('Response: ' + chunk);
 
-        req.write(data);
-        req.end()
+          req.write(data)
+          req.end()
+        catch e
+          console.error(e)
 
 class HistoryEntry
   constructor: (@room, @name, @message) ->
