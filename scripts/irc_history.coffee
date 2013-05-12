@@ -52,14 +52,17 @@ class History
     @robot.brain.data.history = @cache
 
   logEntryExternally: (room, event) ->
-    if process.env.HUBOT_LOG_SERVER_TOKEN and process.env.HUBOT_LOG_SERVER_HOST
+    if process.env.HUBOT_LOG_SERVER_TOKEN? and process.env.HUBOT_LOG_SERVER_HOST?
       process.nextTick ->
+        console.log("SENDING MESSAGE To #{process.env.HUBOT_LOG_SERVER_HOST}...")
         data = querystring.stringify
           token: process.env.HUBOT_LOG_SERVER_TOKEN,
           room:  room,
           text:  event.message,
           author: event.name,
           time:  event.time.toUTCString()
+
+        console.log("SENDING THIS DATA: #{data}")
 
         opts =
           host: process.env.HUBOT_LOG_SERVER_HOST,
@@ -69,6 +72,8 @@ class History
           headers:
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': data.length
+
+        console.log("SENDING VIA THESE OPTS: #{opts}")
 
         try
           req = http.request opts, (res) ->
