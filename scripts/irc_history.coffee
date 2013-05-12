@@ -62,8 +62,6 @@ class History
           author: event.name,
           time:  event.time.toUTCString()
 
-        console.log("SENDING THIS DATA: #{data}")
-
         opts =
           host: process.env.HUBOT_LOG_SERVER_HOST,
           port: 80,
@@ -73,9 +71,8 @@ class History
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': data.length
 
-        console.log("SENDING VIA THESE OPTS: #{opts}")
-
         try
+          console.log("Logging that #{data['author']} said '#{data['text']} at #{data['time']} in #{data['room']}'")
           req = http.request opts, (res) ->
             res.setEncoding('utf8')
             res.on 'data', (chunk) ->
