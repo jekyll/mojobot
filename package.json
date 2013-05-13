@@ -18,7 +18,7 @@
     "hubot": ">=2.4.7",
     "hubot-scripts": ">= 2.4.1",
     "optparse": "1.0.3",
-    "hubot-irc": "~0.1.10",
+    "hubot-irc": "~0.1.12",
     "scraper": ">=0.0.9",
     "underscore": ">0.1.0"
   },
