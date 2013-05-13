@@ -72,7 +72,6 @@ class History
             'Content-Length': data.length
 
         try
-          console.log("Logging that #{data['author']} said '#{data['text']} at #{data['time']} in #{data['room']}'")
           req = http.request opts, (res) ->
             res.setEncoding('utf8')
             res.on 'data', (chunk) ->
