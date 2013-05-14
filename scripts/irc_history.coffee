@@ -50,6 +50,9 @@ class History
     @cache = {}
     @robot.brain.data.history = @cache
 
+  cache_size: (room) ->
+    @cache[room].length
+
 class HistoryEntry
   constructor: (@room, @name, @message) ->
     @time = new Date()
@@ -76,7 +79,7 @@ module.exports = (robot) ->
     if msg.match[1]
       lines = msg.match[1]
     else
-      msg.send "Whoa! Hold your horses. I've got #{history.cache.length} of history, which is probably more than you bargained for. Specify a number of lines!"
+      msg.send "Whoa! Hold your horses. I've got #{history.cache_size(msg.message.room)} of history, which is probably more than you bargained for. Specify a number of lines!"
       return null
     reply_to =  msg.message.user.name
     msg.send "Sending room history to " + reply_to + " via PM"
