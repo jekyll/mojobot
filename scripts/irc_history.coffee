@@ -76,7 +76,8 @@ module.exports = (robot) ->
     if msg.match[1]
       lines = msg.match[1]
     else
-      lines = history.keep
+      msg.send "Whoa! Hold your horses. I am storing #{options.lines_to_keep} of history and you probably don't want all of that. Please specify a number of lines to send you."
+      return null
     reply_to =  msg.message.user.name
     msg.send "Sending room history to " + reply_to + " via PM"
     console.log "sending a history PM to " + reply_to
