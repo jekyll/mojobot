@@ -76,7 +76,7 @@ module.exports = (robot) ->
     if msg.match[1]
       lines = msg.match[1]
     else
-      msg.send "Whoa! Hold your horses. I am storing #{options.lines_to_keep} of history and you probably don't want all of that. Please specify a number of lines to send you."
+      msg.send "Whoa! Hold your horses. I've got #{history.cache.length} of history, which is probably more than you bargained for. Specify a number of lines!"
       return null
     reply_to =  msg.message.user.name
     msg.send "Sending room history to " + reply_to + " via PM"
@@ -84,5 +84,5 @@ module.exports = (robot) ->
     robot.adapter.reply { user: { reply_to: reply_to, name: reply_to }}, history.show(msg.message.room, lines)
 
   robot.respond /clear history/i, (msg) ->
-    msg.send "Eh, sorry mate. Can't clear the history."
-    # history.clear()
+    history.clear()
+    msg.send "Automated unit #{Math.floor(Math.random() * 2351)} initialized, memory wiped. Ready to receive programming."
