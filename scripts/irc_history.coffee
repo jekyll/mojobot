@@ -31,7 +31,6 @@ class History
   add: (room, message) ->
     @cache[room] ?= []
     @cache[room].push message
-    @logEntryExternally(room, message)
     while @cache.length > @keep
       @cache.shift()
     @robot.brain.data.history = @cache
@@ -50,40 +49,6 @@ class History
   clear: ->
     @cache = {}
     @robot.brain.data.history = @cache
-
-  logEntryExternally: (room, event) ->
-    if process.env.HUBOT_LOG_SERVER_TOKEN? and process.env.HUBOT_LOG_SERVER_HOST?
-      process.nextTick ->
-        console.log("SENDING MESSAGE To #{process.env.HUBOT_LOG_SERVER_HOST}...")
-        data = querystring.stringify
-          access_token: process.env.HUBOT_LOG_SERVER_TOKEN,
-          room:  room,
-          text:  event.message,
-          author: event.name,
-          time:  event.time.toUTCString()
-
-        opts =
-          host: process.env.HUBOT_LOG_SERVER_HOST,
-          port: 80,
-          path: "/api/messages/log",
-          method: 'POST',
-          headers:
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': data.length
-
-        try
-          req = http.request opts, (res) ->
-            res.setEncoding('utf8')
-            res.on 'data', (chunk) ->
-              console.log("Response: #{chunk}")
-
-          req.on 'error', (e) ->
-            console.error(e)
-
-          req.write(data)
-          req.end()
-        catch e
-          console.error(e)
 
 class HistoryEntry
   constructor: (@room, @name, @message) ->
