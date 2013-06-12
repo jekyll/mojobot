@@ -18,12 +18,12 @@ module.exports = (robot) ->
    localstorage = robot.brain.data.tell_messages
    robot.respond /tell ([\w.-]*) (.*)/i, (msg) ->
      datetime = new Date()
-     tellmessage = msg.match[1] + ": " + msg.message.user.name + " @ " + datetime.toTimeString() + " said: " + msg.match[2] + "\r\n"
+     tellmessage = "#{msg.match[1]}: #{msg.message.user.name} @ #{datetime.toTimeString()} said: #{msg.match[2]}\r\n"
      if localstorage[msg.match[1]] == undefined
        localstorage[msg.match[1]] = tellmessage
      else
        localstorage[msg.match[1]] += tellmessage
-     msg.send "@" + msg.message.user.name + ": Sodesu sensei sama!"
+     msg.send "#{msg.message.user.name}: Sodesu sensei sama!"
      return
 
    robot.hear /./i, (msg) ->
