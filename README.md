@@ -1,5 +1,8 @@
 # mojobot
 
+A hubot hanging around in the [#jekyll room on IRC](https://botbot.me/freenode/jekyll/).
+Forked from [mattetti/bottetti](https://github.com/mattetti/bottetti).
+
 ## Testing
 
 To test mojobot, run `script/console`. This will load your `.env` file and run the hubot REPL.
