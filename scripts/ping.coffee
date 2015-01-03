@@ -18,8 +18,5 @@ module.exports = (robot) ->
   robot.respond /TIME$/i, (msg) ->
     msg.send "Server time is: #{new Date()}"
 
-  robot.respond /DIE$/i, (msg) ->
-    console.log msg.message.user.name + " killed me"
-    msg.send "Goodbye, cruel world."
-    process.exit 1
-
+  robot.respond /who are you/i, (msg) ->
+    msg.send "I'm #{robot.name}, aka #{robot.alias}. I'm managed by parkr."

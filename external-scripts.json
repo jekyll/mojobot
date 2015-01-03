@@ -1,3 +1,5 @@
 [
+  "hubot-heroku-keepalive",
+  "hubot-seen",
   "hubot-tell"
 ]
